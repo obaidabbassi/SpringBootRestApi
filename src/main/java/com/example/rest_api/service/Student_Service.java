@@ -57,5 +57,21 @@ return studentRepo.findById(id);
     }
 
 
+    public  List<Student>getAllStudents(){
+
+
+
+       return studentRepo.findAll();
+    }
+
+
+    // Method to delete all students
+    public void deleteAllStudents() {
+        studentRepo.deleteAll();
+    }
+
+
+
+
 
 }

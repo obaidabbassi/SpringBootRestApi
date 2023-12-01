@@ -20,8 +20,8 @@ public class Student_Controller {
 
     @Autowired
     Student_Service service;
-
-    @PostMapping("/create")
+//save single student
+    @PostMapping("/api/create")
     public ResponseEntity<String> createStd(@RequestBody Student std) {
         try {
 
@@ -35,8 +35,9 @@ public class Student_Controller {
         }
     }
 
+
 //find student by id
-@GetMapping("find/{id}")
+@GetMapping("/api/find/{id}")
 ResponseEntity <String> getStdByid(@PathVariable  Long id){
     Optional<Student> studentOptional = service.getStudentById(id);
     if (studentOptional.isPresent()) {
@@ -48,6 +49,27 @@ ResponseEntity <String> getStdByid(@PathVariable  Long id){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No student found with id " + id);
     }
 }
+
+
+//get All students
+
+@GetMapping("/api/getAll")
+    ResponseEntity<List<Student>>getAllStudents(){
+
+        List<Student> allStudents = service.getAllStudents();
+
+        return ResponseEntity.ok(allStudents);
+
+
+
+    }
+
+
+
+
+
+
+
 
 
 // Delete student by id
@@ -70,9 +92,23 @@ ResponseEntity<String> deleteById(@PathVariable Long id){
 }
 
 
+//Delete All Students
+    @DeleteMapping("/api/delAll")
+    ResponseEntity<String>deleteAllStudents(){
+
+
+        service.deleteAllStudents();
+
+        return ResponseEntity.ok("All students deleted...") ;
+    }
+
+
+
+
+
 
 //update student by id
-@PatchMapping("update/{id}")
+@PatchMapping("api/update/{id}")
 public ResponseEntity<String> UpdatebyId(@PathVariable long id,@RequestBody Student std){
 
         service.UpdateStudentById(id,std);
@@ -81,8 +117,10 @@ public ResponseEntity<String> UpdatebyId(@PathVariable long id,@RequestBody Stud
         return ResponseEntity.ok("Updated successfully...");
 }
 
+
+
 // Bulk creation
-    @PostMapping("/createAll")
+    @PostMapping("/api/createAll")
     public ResponseEntity<String> createAllStudents(@RequestBody List<Student> students) {
         List<Student> savedStudents = service.saveAllStudents(students);
         return ResponseEntity.ok("Students Created successfully: " + savedStudents.size());
